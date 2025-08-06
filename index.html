@@ -16,8 +16,8 @@
                     <br>
                     <p>Vehicle type: </p>
                     <p>License plate no.:</p>
+                    <p id="ocrResult"></p>
                 </div>
-                <div class="col-5" id="ocrResult"></div>
             </div>
             <br>
             <div class="row">
@@ -73,7 +73,7 @@
                 });
 
                 const result = await ocrResponse.json();
-                document.getElementById("ocrResult").innerText = result.ParsedResults[0].ParsedText;
+                document.getElementById("ocrResult").innerHTML = result.ParsedResults[0].ParsedText;
             }
             document.getElementById('pic').addEventListener('click', function() {
                 // Ambil canvas (tempat menggambar foto)
