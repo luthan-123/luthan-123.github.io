@@ -28,6 +28,12 @@
                 <div class="col-1">
                     <button id="detect">Detect</button>
                 </div>
+                <div class="frontCamera" class="col-1">
+                    <button>Front</button>
+                </div>
+                <div class="backCamera" class="col-1">
+                    <button>Back</button>
+                </div>
             </div>
         </div>
         <script>
@@ -75,6 +81,33 @@
                 const result = await ocrResponse.json();
                 document.getElementById("ocrResult").innerHTML = result.ParsedResults[0].ParsedText;
             }
+            function handleVideo(cameraFacing) {
+                const constraints = {
+                    video: {
+                    facingMode: {
+                        exact: cameraFacing
+                        }
+                    }
+                }
+                return constraints
+            };
+            function turnVideo(constraints) {
+                let video;
+                navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+                    video = document.createElement("video")
+                    video.srcObject = stream
+                    video.play()
+                    video.onloadeddata = () => {
+                        ctx.height = video.videoHeight
+                    }
+                })
+            }
+            document.querySelector(".frontCamera").addEventListener("click", () => {
+                turnVideo(handleVideo("user"));
+            })
+            document.querySelector(".backCamera").addEventListener("click", () => {
+                turnVideo(handleVideo("environment"));
+            })
             document.getElementById('pic').addEventListener('click', function() {
                 // Ambil canvas (tempat menggambar foto)
                 const canvas = document.getElementById('capture');
