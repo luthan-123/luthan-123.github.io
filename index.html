@@ -29,10 +29,10 @@
                     <button id="detect">Detect</button>
                 </div>
                 <div class="col-1">
-                    <button class="frontCamera">Front</button>
+                    <button id="frontCamera">Front</button>
                 </div>
                 <div class="col-1">
-                    <button class="backCamera">Back</button>
+                    <button id="backCamera">Back</button>
                 </div>
             </div>
         </div>
@@ -102,10 +102,10 @@
                     }
                 })
             }
-            document.querySelector(".frontCamera").addEventListener("click", () => {
+            document.getElementById("frontCamera").addEventListener("click", () => {
                 turnVideo(handleVideo("user"));
             })
-            document.querySelector(".backCamera").addEventListener("click", () => {
+            document.getElementById("backCamera").addEventListener("click", () => {
                 turnVideo(handleVideo("environment"));
             })
             document.getElementById('pic').addEventListener('click', function() {
