@@ -1,155 +1,52 @@
 <html>
-    <head>
-<!-- ini edit dari Dmitry -->
-        <title>ERP</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    </head>
-    <body>
-        <h1 class="text-center">Vehicle Congestion Charges</h1>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-6">
-                    <video style="width: 100%;" autoplay="true" id="videoElement"></video>
-                </div>
-                <div class="col-5 bg-secondary">
-                    <h3>VEHICLE INFORMATION</h3>
-                    <br>
-                    <p>Vehicle type: </p>
-                    <p>License plate no.:</p>
-                    <p id="ocrResult"></p>
-                </div>
+
+<head>
+    <title>CV</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <img src="https://simprug.binus.sch.id/id/wp-content/uploads/sites/2/2015/03/r31.jpg"
+                    style="width: 100%; height: auto;">
             </div>
-            <br>
-            <div class="row">
-                <div class="col-3">
-                    <button id="pic">Capture</button>
-                    <canvas id="capture"></canvas>
-                </div>
-                <div class="col-1">
-                    <button id="detect">Detect</button>
-                </div>
-                <div class="col-1">
-                    <button id="frontCamera">Front</button>
-                </div>
-                <div class="col-1">
-                    <button id="backCamera">Back</button>
-                </div>
+            <div class="col-6" style="background-color: #4a8797;">
+                <h1 class="mb" style="color: white">ABC DEF</h1>
+                <h4 style="color: white">Professional Sleeper</h4>
+                <p style="color: white">abcdef@gmail.com</p>
+                <p style="color: white">0123 456 789</p>
+            </div>
+            <div class="col-4" style="background-color: #4a8797;">
+                <img src="https://cdn3.iconfinder.com/data/icons/picons-social/57/11-linkedin-512.png"
+                    style="width: 30px; height: auto;"> <span style="color: white">linkedin.com/abc-def-828ffe84</span>
+                <br>
+                <img src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-social-github-512.png"
+                    style="width: 30px; height: auto;"> <span style="color: white">github.com/abc-def</span>
             </div>
         </div>
-        <script>
-            let video = document.querySelector("#videoElement");
-            if (navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({video: true})
-                .then(function (stream) {
-                    video.srcObject = stream;
-                })
-                .catch(function (error) {
-                    console.log("Error");
-                })
-            }
-            else {
-                console.log("getUserMedia not supported");
-            }
-            document.getElementById("detect").addEventListener("click", async function() {
-                const canvas = document.getElementById('capture');
-                const context = canvas.getContext('2d');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const image = canvas.toDataURL("image/png");
-                await ocr(image);
-            })
-            async function ocr(imageData) {
-                const response = await fetch(imageData);
-                const blob = await response.blob();
+        <div class="row">
+            <div style="grid-template-columns: 12fr;" class="d-grid gap-1">
+                <h4 class="mb" style="color: #4a8797">CAREER SUMMARY</h4>
+            </div>
+            <hr>
+            <div style="grid-template-columns: 12fr;" class="d-grid gap-1 mb">
+                <p>My role largely involves bed testing, examining pillow softness index from different brands, as well
+                    as job training in the hospitality industry.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div style="grid-template-columns: 12fr;" class="d-grid gap-1">
+                <h4 class="mb" style="color: #4a8797">WORK EXPERIENCE</h4>
+            </div>
+            <hr>
+            <div style="grid-template-columns: 12fr;" class="d-grid gap-1">
+                <h6 style="font-weight: bold;">Chief Sleeping Director</h6>
+            </div>
+        </div>
+    </div>
+</body>
 
-                // Setup form data
-                const formData = new FormData();
-                formData.append('file', blob, 'plat.png');
-                formData.append('language', 'eng');
-                formData.append('isOverlayRequired', 'false');
-
-                // Kirim ke OCR.space
-                const ocrResponse = await fetch('https://api.ocr.space/parse/image', {
-                    method: 'POST',
-                    headers: {
-                        'apikey': "K84796358088957"
-                    },
-                    body: formData
-                });
-
-                const result = await ocrResponse.json();
-                document.getElementById("ocrResult").innerHTML = result.ParsedResults[0].ParsedText;
-            }
-            function handleVideo(cameraFacing) {
-                const constraints = {
-                    video: {
-                    facingMode: {
-                        exact: cameraFacing
-                        }
-                    }
-                }
-                return constraints
-            };
-            function turnVideo(constraints) {
-                let video;
-                navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-                    video = document.createElement("video")
-                    video.srcObject = stream
-                    video.play()
-                    video.onloadeddata = () => {
-                        ctx.height = video.videoHeight
-                    }
-                })
-            }
-            document.getElementById("frontCamera").addEventListener("click", () => {
-                turnVideo(handleVideo("user"));
-            })
-            document.getElementById("backCamera").addEventListener("click", () => {
-                turnVideo(handleVideo("environment"));
-            })
-            document.getElementById('pic').addEventListener('click', function() {
-                // Ambil canvas (tempat menggambar foto)
-                const canvas = document.getElementById('capture');
-                const context = canvas.getContext('2d');
-                
-                // Buat ukuran canvas sama dengan video
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                
-                // Ambil gambar dari video dan taruh di canvas
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const timestamp = new Date();
-                const reformat = timestamp.toLocaleString("id-ID");
-                context.font = "40px Arial";
-                const x = canvas.width - 320;
-                const y = canvas.height - 240;
-                context.fillText(reformat, x, y);
-                // Ubah gambar di canvas jadi file foto
-                const foto = canvas.toDataURL('image/png');
-                
-                // Buat link untuk download foto
-                const link = document.createElement('a');
-                link.download = 'foto_saya.png';  // Nama file yang akan didownload
-                link.href = foto;
-                
-                // Download foto secara otomatis
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // Tampilkan pesan sukses
-                alert('Foto berhasil disimpan!');
-            });
-        </script>
-        <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'>
-            import { createWorker } from 'tesseract.js';
-            (async () => {
-                const worker = await createWorker('eng');
-                const ret = await worker.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png');
-                console.log(ret.data.text);
-                await worker.terminate();
-            })();
-        </script>
-    </body>
 </html>
